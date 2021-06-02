@@ -92,7 +92,7 @@ new ControlPanel(controlsElement, {
   minTrackingConfidence: 0.5,
 })
   .add([
-    new StaticText({ title: "MediaPipe Pose" }),
+    new StaticText({ title: "TestPose" }),
     fpsControl,
     new Toggle({ title: "Selfie Mode", field: "selfieMode" }),
     new Slider({
