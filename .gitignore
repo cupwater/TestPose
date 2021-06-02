@@ -1,0 +1,4 @@
+*.tflite
+*.data
+*.binarypb
+*.wasm
