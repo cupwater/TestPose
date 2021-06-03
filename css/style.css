@@ -32,7 +32,7 @@ body {
   position: absolute;
   background-color: #596e73;
   height: 720px;
-  width: 1280px;
+  width: 720px;
 }
 
 .input_video {
@@ -49,7 +49,7 @@ body {
 .output_canvas {
   position:absolute;
   height: 720px;
-  width: 1280px;
+  width: 720px;
   left: 0;
   top: 0;
 }
