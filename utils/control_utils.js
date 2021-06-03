@@ -137,8 +137,8 @@
     c = c.appendChild(document.createElement("div"));
     c.classList.add("fps-60");
     c.textContent = "60";
-    a.width = 1;
-    a.height = 1;
+    a.width = 10;
+    a.height = 10;
     this.j = a.getContext("2d");
     v(this, 0);
   };
