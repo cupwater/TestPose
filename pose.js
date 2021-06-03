@@ -1512,6 +1512,28 @@
     [27, 31],
     [28, 32],
   ]);
+  U("POSE_M_CONNECTIONS", [
+    [0, 2],
+    [0, 5],
+    // [0, 11],
+    // [0, 12],
+    // [0, 9],
+    // [0, 10],
+    [2, 7],
+    [5, 8],
+    [11, 12],
+    [11, 23],
+    [12, 24],
+    [23, 24],
+    [11, 13],
+    [13, 15],
+    [12, 14],
+    [14, 16],
+    [23, 25],
+    [24, 26],
+    [25, 27],
+    [26, 28],
+  ]);
   U("POSE_LANDMARKS", {
     NOSE: 0,
     LEFT_EYE_INNER: 1,
@@ -1546,6 +1568,38 @@
     RIGHT_HEEL: 30,
     LEFT_FOOT_INDEX: 31,
     RIGHT_FOOT_INDEX: 32,
+  });
+
+  U("POSE_LANDMARKS_HEAD", {
+    NOSE: 0,
+    RIGHT_EYE: 5,
+    LEFT_EYE: 2,
+    RIGHT_EAR: 8,
+    LEFT_EAR: 7,
+    // MOUTH_RIGHT: 10,
+    // MOUTH_LEFT: 9,
+  });
+  U("POSE_LANDMARKS_BODY", {
+    RIGHT_SHOULDER: 12,
+    LEFT_SHOULDER: 11,
+    RIGHT_HIP: 24,
+    LEFT_HIP: 23,
+  });
+  U("POSE_LANDMARKS_ARM", {
+    RIGHT_SHOULDER: 12,
+    LEFT_SHOULDER: 14,
+    RIGHT_ELBOW: 16,
+    LEFT_ELBOW: 11,
+    RIGHT_WRIST: 13,
+    LEFT_WRIST: 15,
+  });
+  U("POSE_LANDMARKS_LEG", {
+    RIGHT_HIP: 24,
+    LEFT_HIP: 23,
+    RIGHT_KNEE: 26,
+    LEFT_KNEE: 25,
+    RIGHT_HEEL: 28,
+    LEFT_ANKLE: 27,
   });
   U("POSE_LANDMARKS_LEFT", {
     LEFT_EYE_INNER: 1,

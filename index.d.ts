@@ -19,7 +19,7 @@ export declare const POSE_CONNECTIONS: LandmarkConnectionArray;
  * interface allows us to prevent obfuscation for external javascript linkage,
  * while still allowing optimization for internal linkages.
  */
-export declare const POSE_LANDMARKS: {
+ export declare const POSE_LANDMARKS: {
   NOSE: number,
   RIGHT_EYE_INNER: number,
   RIGHT_EYE: number,
@@ -46,6 +46,42 @@ export declare const POSE_LANDMARKS: {
   RIGHT_HIP: number,
   LEFT_HIP: number
 };
+
+ export declare const POSE_LANDMARKS_HEAD: {
+  NOSE: number,
+  RIGHT_EYE: number,
+  LEFT_EYE: number,
+  RIGHT_EAR: number,
+  LEFT_EAR: number
+  // MOUTH_RIGHT: number,
+  // MOUTH_LEFT: number
+};
+
+export declare const POSE_LANDMARKS_BODY: {
+  RIGHT_SHOULDER: number,
+  LEFT_SHOULDER: number,
+  RIGHT_HIP: number,
+  LEFT_HIP: number
+};
+
+export declare const POSE_LANDMARKS_ARM: {
+  RIGHT_SHOULDER: number,
+  LEFT_SHOULDER: number,
+  RIGHT_ELBOW: number,
+  LEFT_ELBOW: number,
+  RIGHT_WRIST: number,
+  LEFT_WRIST: number
+};
+
+export declare const POSE_LANDMARKS_LEG: {
+  RIGHT_HIP: number,
+  LEFT_HIP: number,
+  RIGHT_KNEE: number,
+  LEFT_KNEE: number,
+  RIGHT_HEEL: number,
+  LEFT_ANKLE: number
+};
+
 
 /**
  * Just the left-side landmarks for pose.
