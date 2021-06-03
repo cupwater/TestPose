@@ -1,6 +1,6 @@
 var Module =
-  typeof createMediapipeSolutionsPackedAssets !== "undefined"
-    ? createMediapipeSolutionsPackedAssets
+  typeof createTestposeSolutionsPackedAssets !== "undefined"
+    ? createTestposeSolutionsPackedAssets
     : {};
 
 if (!Module.expectedDataFileDownloads) {

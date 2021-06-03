@@ -252,7 +252,7 @@ export declare class Pose implements PoseInterface {
   onResults(listener: ResultsListener): void;
 
   /**
-   * Initializes the solution. This includes loading ML models and mediapipe
+   * Initializes the solution. This includes loading ML models and testpose
    * configurations, as well as setting up potential listeners for metadata. If
    * `initialize` is not called manually, then it will be called the first time
    * the developer calls `send`.

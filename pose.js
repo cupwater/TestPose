@@ -790,10 +790,10 @@
             e = l.i;
             if ("object" === typeof window)
               return (
-                ya("createMediapipeSolutionsWasm", {
+                ya("createTestposeSolutionsWasm", {
                   locateFile: d.locateFile,
                 }),
-                ya("createMediapipeSolutionsPackedAssets", {
+                ya("createTestposeSolutionsPackedAssets", {
                   locateFile: d.locateFile,
                 }),
                 (m = k.filter(function (x) {
@@ -826,8 +826,8 @@
                     return T(t, function (B) {
                       if (1 == B.g)
                         return (
-                          (w = window.createMediapipeSolutionsWasm),
-                          (v = window.createMediapipeSolutionsPackedAssets),
+                          (w = window.createTestposeSolutionsWasm),
+                          (v = window.createTestposeSolutionsPackedAssets),
                           Q(B, w(v), 2)
                         );
                       n.h = B.i;
@@ -860,7 +860,7 @@
                 return f.locateFile(x.url, f.H);
               });
             importScripts.apply(null, ha(g));
-            return Q(l, createMediapipeSolutionsWasm(Module), 6);
+            return Q(l, createTestposeSolutionsWasm(Module), 6);
           case 6:
             d.h = l.i;
             d.j = new OffscreenCanvas(1, 1);

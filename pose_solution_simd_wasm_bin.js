@@ -1,15 +1,15 @@
-var createMediapipeSolutionsWasm = (function () {
+var createTestposeSolutionsWasm = (function () {
   var _scriptDir =
     typeof document !== "undefined" && document.currentScript
       ? document.currentScript.src
       : undefined;
   if (typeof __filename !== "undefined") _scriptDir = _scriptDir || __filename;
-  return function (createMediapipeSolutionsWasm) {
-    createMediapipeSolutionsWasm = createMediapipeSolutionsWasm || {};
+  return function (createTestposeSolutionsWasm) {
+    createTestposeSolutionsWasm = createTestposeSolutionsWasm || {};
 
     var Module =
-      typeof createMediapipeSolutionsWasm !== "undefined"
-        ? createMediapipeSolutionsWasm
+      typeof createTestposeSolutionsWasm !== "undefined"
+        ? createTestposeSolutionsWasm
         : {};
     var readyPromiseResolve, readyPromiseReject;
     Module["ready"] = new Promise(function (resolve, reject) {
@@ -14139,14 +14139,14 @@ var createMediapipeSolutionsWasm = (function () {
     }
     run();
 
-    return createMediapipeSolutionsWasm.ready;
+    return createTestposeSolutionsWasm.ready;
   };
 })();
 if (typeof exports === "object" && typeof module === "object")
-  module.exports = createMediapipeSolutionsWasm;
+  module.exports = createTestposeSolutionsWasm;
 else if (typeof define === "function" && define["amd"])
   define([], function () {
-    return createMediapipeSolutionsWasm;
+    return createTestposeSolutionsWasm;
   });
 else if (typeof exports === "object")
-  exports["createMediapipeSolutionsWasm"] = createMediapipeSolutionsWasm;
+  exports["createTestposeSolutionsWasm"] = createTestposeSolutionsWasm;
