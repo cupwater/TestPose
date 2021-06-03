@@ -74,6 +74,7 @@ body {
 
 .control-panel {
   position: absolute;
+  visibility: hidden;
   left: 10px;
   top: 10px;
 }
