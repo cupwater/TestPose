@@ -35,24 +35,24 @@ function onResults(results) {
     canvasElement.width,
     canvasElement.height
   );
-  // drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
-  //   visibilityMin: 0.65,
-  //   color: "white",
-  // });
-
+  
   drawConnectors(canvasCtx, results.poseLandmarks, POSE_M_CONNECTIONS, {
     visibilityMin: 0.35,
     color: "rgb(142,239,131)",
   });
 
+  // drawConnectors(canvasCtx, newHeadLms, [[0,1], [2,3]], {
+  //   visibilityMin: 0.35,
+  //   color: "rgb(142,239,131)",
+  // });
 
-  drawLandmarks(
-      canvasCtx,
-      Object.values(POSE_LANDMARKS_HEAD).map(
-        (index) => results.poseLandmarks[index]
-      ),
-      { visibilityMin: 0.15, color: zColor, fillColor: "rgb(243,62,18)" }
-    );
+  // drawLandmarks(
+  //     canvasCtx,
+  //     Object.values(POSE_LANDMARKS_HEAD).map(
+  //       (index) => results.poseLandmarks[index]
+  //     ),
+  //     { visibilityMin: 0.15, color: zColor, fillColor: "rgb(243,62,18)" }
+  //   );
     drawLandmarks(
       canvasCtx,
       Object.values(POSE_LANDMARKS_BODY).map(
@@ -74,7 +74,6 @@ function onResults(results) {
       ),
       { visibilityMin: 0.15, color: zColor, fillColor: "rgb(219,39,241)" }
     );
-
 
   // drawLandmarks(
   //   canvasCtx,
@@ -107,12 +106,44 @@ const pose = new Pose({
 });
 pose.onResults(onResults);
 
+function onResultsFaceMesh(results) {
+  if (results.multiFaceLandmarks) {
+    for (const landmarks of results.multiFaceLandmarks) {
+
+      var newHeadlms = [landmarks[10], landmarks[199], landmarks[234], landmarks[454]];
+      newHeadlms[0].x = 1 - newHeadlms[0].x ;
+      newHeadlms[1].x = 1 - newHeadlms[1].x ;
+      newHeadlms[2].x = 1 - newHeadlms[2].x ;
+      newHeadlms[3].x = 1 - newHeadlms[3].x ;
+      drawLandmarks( 
+          canvasCtx,
+          newHeadlms, 
+          { visibilityMin: 0.15, color: zColor, fillColor: "rgb(243,62,18)" }
+      );
+      drawConnectors(canvasCtx, newHeadlms, [[0,1],[2,3]],
+        {color: 'rgb(142,239,131)'});
+    }
+  }
+  canvasCtx.restore();
+}
+const faceMesh = new FaceMesh({locateFile: (file) => {
+  return `${file}`;
+}});
+faceMesh.setOptions({
+  maxNumFaces: 1,
+  refineLandmarks: true,
+  minDetectionConfidence: 0.5,
+  minTrackingConfidence: 0.5
+});
+faceMesh.onResults(onResultsFaceMesh);
+
 /**
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
-const camera = new Camera(videoElement, {
+ const camera = new Camera(videoElement, {
   onFrame: async () => {
     await pose.send({ image: videoElement });
+    await faceMesh.send({image: videoElement});
   },
   width: 720,
   height: 720,

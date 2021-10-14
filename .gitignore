@@ -1,4 +1,6 @@
 *.tflite
 *.data
 *.binarypb
+.*
 *.wasm
+baks
