@@ -21,10 +21,8 @@ function zColor(data) {
 function onResults(results) {
   // Hide the spinner.
   document.body.classList.add("loaded");
-
   // Update the frame rate.
   fpsControl.tick();
-
   // Draw the overlays.
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -36,66 +34,45 @@ function onResults(results) {
     canvasElement.height
   );
   
-  drawConnectors(canvasCtx, results.poseLandmarks, POSE_M_CONNECTIONS, {
+  body_idxs = [11,12,13,14,15,16,23,24];
+  var abdo_list = []; 
+  for (var i=0; i<8; i++)
+  {
+    abdo_list.push(results.poseLandmarks[body_idxs[i]])
+  }
+
+  c_ab_x = (results.poseLandmarks[23].x + results.poseLandmarks[24].x) / 2;
+  c_ab_y = (results.poseLandmarks[23].y + results.poseLandmarks[24].y) / 2;
+  c_ab_z = (results.poseLandmarks[23].z + results.poseLandmarks[24].z) / 2;
+  c_ab_v = (results.poseLandmarks[23].visibility + results.poseLandmarks[24].visibility) / 2;
+
+  c_sh_x = (results.poseLandmarks[11].x + results.poseLandmarks[12].x) / 2;
+  c_sh_y = (results.poseLandmarks[11].y + results.poseLandmarks[12].y) / 2;
+  c_sh_z = (results.poseLandmarks[11].z + results.poseLandmarks[12].z) / 2;
+  c_sh_v = (results.poseLandmarks[11].visibility + results.poseLandmarks[12].visibility) / 2;
+
+  ratio_list = [1.5, 3, 6];
+  abdo_list.push({'x': c_sh_x, 'y':c_sh_y, 'z': c_sh_z, 'visibility': c_sh_v});
+  for (var i=0; i<3; i++)
+  { 
+    ratio = ratio_list[i];
+    _x = (c_sh_x + (ratio - 1) * c_ab_x) / ratio;
+    _y = (c_sh_y + (ratio - 1) * c_ab_y) / ratio;
+    _z = (c_sh_z + (ratio - 1) * c_ab_z) / ratio;
+    _v = (c_sh_v + (ratio - 1) * c_ab_v) / ratio;
+    abdo_list.push({'x': _x, 'y':_y, 'z': _z, 'visibility': _v})
+  }
+  
+  drawLandmarks(
+    canvasCtx,
+    abdo_list,
+    { visibilityMin: 0.15, color: zColor, fillColor: "rgb(18,38,243)" }
+  );
+    drawConnectors(canvasCtx, abdo_list, POSE_N_CONNECTIONS, {
     visibilityMin: 0.35,
     color: "rgb(142,239,131)",
   });
 
-  // drawConnectors(canvasCtx, newHeadLms, [[0,1], [2,3]], {
-  //   visibilityMin: 0.35,
-  //   color: "rgb(142,239,131)",
-  // });
-
-  // drawLandmarks(
-  //     canvasCtx,
-  //     Object.values(POSE_LANDMARKS_HEAD).map(
-  //       (index) => results.poseLandmarks[index]
-  //     ),
-  //     { visibilityMin: 0.15, color: zColor, fillColor: "rgb(243,62,18)" }
-  //   );
-    drawLandmarks(
-      canvasCtx,
-      Object.values(POSE_LANDMARKS_BODY).map(
-        (index) => results.poseLandmarks[index]
-      ),
-      { visibilityMin: 0.15, color: zColor, fillColor: "rgb(18,38,243)" }
-    );
-    drawLandmarks(
-      canvasCtx,
-      Object.values(POSE_LANDMARKS_ARM).map(
-        (index) => results.poseLandmarks[index]
-      ),
-      { visibilityMin: 0.15, color: zColor, fillColor: "rgb(39,241,155)" }
-    );
-    drawLandmarks(
-      canvasCtx,
-      Object.values(POSE_LANDMARKS_LEG).map(
-        (index) => results.poseLandmarks[index]
-      ),
-      { visibilityMin: 0.15, color: zColor, fillColor: "rgb(219,39,241)" }
-    );
-
-  // drawLandmarks(
-  //   canvasCtx,
-  //   Object.values(POSE_LANDMARKS_LEFT).map(
-  //     (index) => results.poseLandmarks[index]
-  //   ),
-  //   { visibilityMin: 0.65, color: zColor, fillColor: "rgb(255,138,0)" }
-  // );
-  // drawLandmarks(
-  //   canvasCtx,
-  //   Object.values(POSE_LANDMARKS_RIGHT).map(
-  //     (index) => results.poseLandmarks[index]
-  //   ),
-  //   { visibilityMin: 0.65, color: zColor, fillColor: "rgb(0,217,231)" }
-  // );
-  // drawLandmarks(
-  //   canvasCtx,
-  //   Object.values(POSE_LANDMARKS_NEUTRAL).map(
-  //     (index) => results.poseLandmarks[index]
-  //   ),
-  //   { visibilityMin: 0.65, color: zColor, fillColor: "white" }
-  // );
   canvasCtx.restore();
 }
 
@@ -109,26 +86,27 @@ pose.onResults(onResults);
 function onResultsFaceMesh(results) {
   if (results.multiFaceLandmarks) {
     for (const landmarks of results.multiFaceLandmarks) {
-
       var newHeadlms = [landmarks[10], landmarks[199], landmarks[234], landmarks[454]];
-      newHeadlms[0].x = 1 - newHeadlms[0].x ;
-      newHeadlms[1].x = 1 - newHeadlms[1].x ;
-      newHeadlms[2].x = 1 - newHeadlms[2].x ;
-      newHeadlms[3].x = 1 - newHeadlms[3].x ;
-      drawLandmarks( 
-          canvasCtx,
-          newHeadlms, 
-          { visibilityMin: 0.15, color: zColor, fillColor: "rgb(243,62,18)" }
+      newHeadlms[0].x = 1 - newHeadlms[0].x;
+      newHeadlms[1].x = 1 - newHeadlms[1].x;
+      newHeadlms[2].x = 1 - newHeadlms[2].x;
+      newHeadlms[3].x = 1 - newHeadlms[3].x;
+      drawLandmarks(
+        canvasCtx,
+        newHeadlms,
+        { visibilityMin: 0.15, color: zColor, fillColor: "rgb(243,62,18)" }
       );
-      drawConnectors(canvasCtx, newHeadlms, [[0,1],[2,3]],
-        {color: 'rgb(142,239,131)'});
+      drawConnectors(canvasCtx, newHeadlms, [[0, 1], [2, 3]],
+        { color: 'rgb(142,239,131)' });
     }
   }
   canvasCtx.restore();
 }
-const faceMesh = new FaceMesh({locateFile: (file) => {
-  return `${file}`;
-}});
+const faceMesh = new FaceMesh({
+  locateFile: (file) => {
+    return `${file}`;
+  }
+});
 faceMesh.setOptions({
   maxNumFaces: 1,
   refineLandmarks: true,
@@ -140,10 +118,10 @@ faceMesh.onResults(onResultsFaceMesh);
 /**
  * Instantiate a camera. We'll feed each frame we receive into the solution.
  */
- const camera = new Camera(videoElement, {
+const camera = new Camera(videoElement, {
   onFrame: async () => {
     await pose.send({ image: videoElement });
-    await faceMesh.send({image: videoElement});
+    await faceMesh.send({ image: videoElement });
   },
   width: 720,
   height: 720,
