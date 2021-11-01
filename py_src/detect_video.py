@@ -91,8 +91,6 @@ def detect(video_path):
         #     exit()
 
         frame_idx += 1
-        if frame_idx > 100:
-            break
 
     cap.release()
     cv2.destroyAllWindows()

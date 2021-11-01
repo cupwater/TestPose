@@ -1,4 +1,5 @@
 *.tflite
+*_pycache__*
 *.data
 *.binarypb
 .*
