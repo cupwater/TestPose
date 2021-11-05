@@ -15,5 +15,7 @@ if __name__ == "__main__":
         output_path = os.path.splitext(args.video)[0] + '.json'
     else:
         output_path = args.output
+    if not os.path.exists(os.path.split(output_path)[0]):
+        os.makedirs(os.path.split(output_path)[0])
     json.dump(detect_result, open(output_path, 'w'), indent=2)
     print(f"output path: {output_path}")

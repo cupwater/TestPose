@@ -12,7 +12,7 @@ import argparse
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 mp_face_mesh = mp.solutions.face_mesh
-head_idx_list = [10, 199, 234, 454]
+head_idx_list = [10, 199, 234, 454, 1]
 body_idx_list = [11, 12, 13, 14, 15, 16, 23, 24]
 
 face_mesh = mp_face_mesh.FaceMesh(
@@ -35,11 +35,15 @@ def detect(video_path):
     frame_counter = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     video_info = { 'frame_width': width, 'frame_height': height, 'frame_counter': frame_counter, 'fps': fps }
+    print(video_info)
     detect_result['video_info'] = video_info
     frame_idx = 0
-    while(cap.isOpened()):
+    while(cap.isOpened() and frame_idx < frame_counter):
         # Capture frame-by-frame
         _, image = cap.read()
+        if image is None:
+            frame_idx += 1
+            continue
 
         # image = cv2.imread('imgs/2.jpg')
         # Flip the image horizontally for a later selfie-view display, and convert
@@ -93,5 +97,4 @@ def detect(video_path):
         frame_idx += 1
 
     cap.release()
-    cv2.destroyAllWindows()
     return detect_result
