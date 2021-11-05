@@ -86,11 +86,12 @@ pose.onResults(onResults);
 function onResultsFaceMesh(results) {
   if (results.multiFaceLandmarks) {
     for (const landmarks of results.multiFaceLandmarks) {
-      var newHeadlms = [landmarks[10], landmarks[199], landmarks[234], landmarks[454]];
+      var newHeadlms = [landmarks[10], landmarks[199], landmarks[234], landmarks[454], landmarks[1]];
       newHeadlms[0].x = 1 - newHeadlms[0].x;
       newHeadlms[1].x = 1 - newHeadlms[1].x;
       newHeadlms[2].x = 1 - newHeadlms[2].x;
       newHeadlms[3].x = 1 - newHeadlms[3].x;
+      newHeadlms[4].x = 1 - newHeadlms[4].x;
       drawLandmarks(
         canvasCtx,
         newHeadlms,

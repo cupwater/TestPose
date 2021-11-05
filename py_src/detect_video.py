@@ -12,7 +12,7 @@ import argparse
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 mp_face_mesh = mp.solutions.face_mesh
-head_idx_list = [10, 199, 234, 454]
+head_idx_list = [10, 199, 234, 454, 1]
 body_idx_list = [11, 12, 13, 14, 15, 16, 23, 24]
 
 face_mesh = mp_face_mesh.FaceMesh(
