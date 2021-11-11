@@ -22,7 +22,7 @@ face_mesh = mp_face_mesh.FaceMesh(
     min_detection_confidence=0.5,
 )
 pose = mp_pose.Pose(
-    static_image_mode=True, model_complexity=2, min_detection_confidence=0.5
+    static_image_mode=True, model_complexity=1, min_detection_confidence=0.5
 )
 
 def detect(video_path):
@@ -78,21 +78,33 @@ def detect(video_path):
             landmarks.append([_x, _y, _z, _v])
         landmarks.append([c_sh_x, c_sh_y, c_sh_z, c_sh_v])
 
-        results = face_mesh.process(cv2.flip(img, 1))
-        if not results.multi_face_landmarks:
-            detect_result[f'frame_{frame_idx}'] = 'failed'
-            continue
-        face_lms = [results.multi_face_landmarks[0].landmark[i] for i in head_idx_list]
-        landmarks += [[lms.x, lms.y, lms.z, lms.visibility] for lms in face_lms]
+        landmarks += [[pose_landmarks[i].x, pose_landmarks[i].y, pose_landmarks[i].z, pose_landmarks[i].visibility] for i in [7,8,0]]
+        # add forehead and chin
+        for l,r in [[1,4], [10,9]]:
+            _cx = (pose_landmarks[l].x + pose_landmarks[r].x)/2
+            _cy = (pose_landmarks[l].y + pose_landmarks[r].y)/2
+            _cz = (pose_landmarks[l].z + pose_landmarks[r].z)/2
+            _cv = (pose_landmarks[l].visibility + pose_landmarks[r].visibility)/2
+            landmarks.append([_cx, _cy, _cz, _cv])
+        # forehead
+        landmarks[-2] = (2*np.array(landmarks[-2]) - np.array(landmarks[-3])).tolist()
+        landmarks[-1] = (2*np.array(landmarks[-1]) - np.array(landmarks[-3])).tolist()
+
+        # results = face_mesh.process(cv2.flip(img, 1))
+        # if not results.multi_face_landmarks:
+        #     detect_result[f'frame_{frame_idx}'] = 'failed'
+        #     continue
+        # face_lms = [results.multi_face_landmarks[0].landmark[i] for i in head_idx_list]
+        # landmarks += [[lms.x, lms.y, lms.z, lms.visibility] for lms in face_lms]
 
         detect_result[f'frame_{frame_idx}'] = [item for sublist in landmarks for item in sublist]
-        # # image = cv2.flip(image, 1)
-        # for lms in landmarks:
-        #     pos = ( int(width*lms[0]), int(height*lms[1]) )
-        #     cv2.circle(image, pos, 5, (0, 255, 0), 3)
-        # cv2.imshow("MediaPipe Pose", image)
-        # if cv2.waitKey(10) & 0xFF == 27:
-        #     exit()
+        # image = cv2.flip(image, 1)
+        for lms in landmarks:
+            pos = ( int(width*lms[0]), int(height*lms[1]) )
+            cv2.circle(image, pos, 5, (0, 255, 0), 3)
+        cv2.imshow("MediaPipe Pose", image)
+        if cv2.waitKey(10) & 0xFF == 27:
+            exit()
 
         frame_idx += 1
 

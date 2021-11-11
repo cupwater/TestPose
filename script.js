@@ -62,12 +62,39 @@ function onResults(results) {
     _v = (c_sh_v + (ratio - 1) * c_ab_v) / ratio;
     abdo_list.push({'x': _x, 'y':_y, 'z': _z, 'visibility': _v})
   }
+
+  var head_idx = [7, 8]
+  for (var i=0; i<2; i++)
+  { 
+    abdo_list.push(results.poseLandmarks[head_idx[i]])
+  }
+
+  for (var i=0; i<2; i++)
+  {
+    if(i==0)
+    {
+      l=1;
+      r=4
+    }
+    else
+    {
+      l=10;
+      r=9;
+    }
+    var _cx = results.poseLandmarks[l].x + results.poseLandmarks[r].x - results.poseLandmarks[0].x
+    var _cy = results.poseLandmarks[l].y + results.poseLandmarks[r].y - results.poseLandmarks[0].y
+    var _cz = results.poseLandmarks[l].z + results.poseLandmarks[r].z - results.poseLandmarks[0].z
+    var _cv = results.poseLandmarks[l].visibility + results.poseLandmarks[r].visibility - results.poseLandmarks[0].visibility
+    abdo_list.push({x:_cx, y:_cy, z:_cz, visibility:_cv})
+  }
   
   drawLandmarks(
     canvasCtx,
     abdo_list,
     { visibilityMin: 0.15, color: zColor, fillColor: "rgb(18,38,243)" }
   );
+  abdo_list.push(results.poseLandmarks[0])
+  
     drawConnectors(canvasCtx, abdo_list, POSE_N_CONNECTIONS, {
     visibilityMin: 0.35,
     color: "rgb(142,239,131)",
@@ -122,7 +149,7 @@ faceMesh.onResults(onResultsFaceMesh);
 const camera = new Camera(videoElement, {
   onFrame: async () => {
     await pose.send({ image: videoElement });
-    await faceMesh.send({ image: videoElement });
+    // await faceMesh.send({ image: videoElement });
   },
   width: 720,
   height: 720,
