@@ -87,7 +87,31 @@ function onResults(results) {
     var _cv = results.poseLandmarks[l].visibility + results.poseLandmarks[r].visibility - results.poseLandmarks[0].visibility
     abdo_list.push({x:_cx, y:_cy, z:_cz, visibility:_cv})
   }
-  
+  for (var i=0; i<11; i++)
+  {
+    abdo_list.push(results.poseLandmarks[i])
+  }
+
+  for (var i=0; i<2; i++)
+  {
+    if(i==0)
+    {
+      l=1;
+      r=4
+    }
+    else
+    {
+      l=10;
+      r=9;
+    }
+    var _cx = (results.poseLandmarks[l].x + results.poseLandmarks[r].x)/2
+    var _cy = (results.poseLandmarks[l].y + results.poseLandmarks[r].y)/2
+    var _cz = (results.poseLandmarks[l].z + results.poseLandmarks[r].z)/2
+    var _cv = (results.poseLandmarks[l].visibility + results.poseLandmarks[r].visibility)/2
+    abdo_list.push({x:_cx, y:_cy, z:_cz, visibility:_cv})
+  }
+
+
   drawLandmarks(
     canvasCtx,
     abdo_list,
@@ -108,40 +132,14 @@ const pose = new Pose({
     return `${file}`;
   },
 });
-pose.onResults(onResults);
-
-function onResultsFaceMesh(results) {
-  if (results.multiFaceLandmarks) {
-    for (const landmarks of results.multiFaceLandmarks) {
-      var newHeadlms = [landmarks[10], landmarks[199], landmarks[234], landmarks[454], landmarks[1]];
-      newHeadlms[0].x = 1 - newHeadlms[0].x;
-      newHeadlms[1].x = 1 - newHeadlms[1].x;
-      newHeadlms[2].x = 1 - newHeadlms[2].x;
-      newHeadlms[3].x = 1 - newHeadlms[3].x;
-      newHeadlms[4].x = 1 - newHeadlms[4].x;
-      drawLandmarks(
-        canvasCtx,
-        newHeadlms,
-        { visibilityMin: 0.15, color: zColor, fillColor: "rgb(243,62,18)" }
-      );
-      drawConnectors(canvasCtx, newHeadlms, [[0, 1], [2, 3]],
-        { color: 'rgb(142,239,131)' });
-    }
-  }
-  canvasCtx.restore();
-}
-const faceMesh = new FaceMesh({
-  locateFile: (file) => {
-    return `${file}`;
-  }
-});
-faceMesh.setOptions({
-  maxNumFaces: 1,
-  refineLandmarks: true,
+pose.setOptions({
+  selfieMode: true,
+  modelComplexity: 1,
+  smoothLandmarks: true,
   minDetectionConfidence: 0.5,
-  minTrackingConfidence: 0.5
+  minTrackingConfidence: 0.5,
 });
-faceMesh.onResults(onResultsFaceMesh);
+pose.onResults(onResults);
 
 /**
  * Instantiate a camera. We'll feed each frame we receive into the solution.
@@ -149,7 +147,6 @@ faceMesh.onResults(onResultsFaceMesh);
 const camera = new Camera(videoElement, {
   onFrame: async () => {
     await pose.send({ image: videoElement });
-    // await faceMesh.send({ image: videoElement });
   },
   width: 720,
   height: 720,
